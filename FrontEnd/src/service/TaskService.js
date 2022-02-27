@@ -24,6 +24,11 @@ class TaskService {
     deleteTask(taskId){
         return axios.delete(TASK_API_BASE_URL + '/' + taskId);
     }
+
+    updateTaskCompleted (taskId){
+        return axios.put(TASK_API_BASE_URL + 'completado' +'/'+ taskId);
+         
+     }
 }
 
 export default new TaskService()

@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import TaskService from '../service/TaskService';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faCheckCircle,faClock} from '@fortawesome/free-solid-svg-icons';
 
 class ListTaskComponent extends Component {
     constructor(props) {
@@ -11,6 +13,7 @@ class ListTaskComponent extends Component {
         this.addtask = this.addTask.bind(this);
         this.editTask = this.editTask.bind(this);
         this.deleteTask = this.deleteTask.bind(this);
+        this.updateTaskCompleted=this.updateTaskCompleted.bind(this);
     }
 
     deleteTask(id){
@@ -34,6 +37,16 @@ class ListTaskComponent extends Component {
     addTask(){
         this.props.history.push('/add-task/-1');
     }
+
+    updateTaskCompleted(id){
+        TaskService.updateTaskCompleted(id).then( res => {
+            this.props.history.push('/task');
+
+        
+        });
+    }
+
+
 
     render() {
         return (
@@ -59,9 +72,23 @@ class ListTaskComponent extends Component {
                                         <tr key = {task.id}>
                                              <td> { task.description} </td>   
                                              <td>
-                                                 <button onClick={ () => this.editTask(task.id)} className="btn btn-info">Update </button>
-                                                 <button style={{marginLeft: "10px"}} onClick={ () => this.deleteTask(task.id)} className="btn btn-danger">Delete </button>
-                                                 <button style={{marginLeft: "10px"}} onClick={ () => this.viewTask(task.id)} className="btn btn-info">Select </button>
+                                             {
+                                                    task.completado ?
+                                                     <div className="text-succes small"> 
+                                                     <FontAwesomeIcon icon= {faCheckCircle}/>{" "}
+                                                        completed
+                                                    </div>
+                                                    : 
+                                                     <div className="text-secundary small"> 
+                                                     <FontAwesomeIcon icon= {faClock}/>{" "}
+                                                        Pendiente
+                                                     </div>   
+                                                   }  
+                                                 <form>     
+                                                    <button onClick={ () => this.editTask(task.id)} className="btn btn-info">Update </button>
+                                                    <button style={{marginLeft: "10px"}} onClick={ () => this.deleteTask(task.id)} className="btn btn-danger">Delete </button>
+                                                    <button style={{marginLeft: "10px"}} onClick={ () => this.updateTaskCompleted(task.id)} className="btn btn-secondary">Completed </button>
+                                                </form>  
                                              </td>
                                         </tr>
                                     )

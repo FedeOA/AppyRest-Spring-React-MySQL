@@ -73,7 +73,7 @@ public class TaskController {
 	
 	
 	@PutMapping("/completado/{id}")
-	public ResponseEntity<?> updateCompleted (@RequestBody Task taskDetails, @PathVariable (value ="id") Long taskId){
+	public ResponseEntity<?> updateCompleted (@PathVariable (value ="id") Long taskId){
 		
 		Optional <Task> oTask= taskService.findById(taskId);
 		
@@ -84,7 +84,7 @@ public class TaskController {
 		} 
 		
 		
-		oTask.get().setCompletado(taskDetails.isCompletado());
+		oTask.get().setCompletado(!oTask.get().isCompletado());
 		return ResponseEntity.status(HttpStatus.CREATED).body(taskService.save(oTask.get()));
 	}
 	
